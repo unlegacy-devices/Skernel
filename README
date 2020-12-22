@@ -1,0 +1,17 @@
+SKernel
+
+SKernel was created for giving the users of "underprivileged" devices a memorable experience. 
+It ensures that everything is perfect from kernel side. 
+SKernel was created in mind, keeping these things - Speed, Performance and Stability. 
+None had an upper hand over the other, all were given equal importance. 
+After all the bits were in their right places, SKernel was born.
+Initially built for the LG Optimus L5, SKernel now supports all the variants of LG Optimus L5, L7 and L3 II. Last device added to the line is YU Yuphoria.
+
+
+Official Maintainers
+Suhail (skyinfo) - All devices
+Caio (Caio99BR)  - All devices
+
+For building along with ROM, use the branch 'rom-lp'
+
+Linux 3.x release notes - https://www.dropbox.com/s/oxooq654yzx4z22/Linux%203.x%20notes.txt?dl=0
