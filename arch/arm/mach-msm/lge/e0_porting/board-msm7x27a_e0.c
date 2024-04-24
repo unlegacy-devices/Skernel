@@ -363,73 +363,6 @@ static struct msm_pm_boot_platform_data msm_pm_boot_pdata __initdata = {
 	.p_addr = 0,
 };
 
-/* 8625 PM platform data */
-static struct msm_pm_platform_data msm8625_pm_data[MSM_PM_SLEEP_MODE_NR * 2] = {
-	/* CORE0 entries */
-	[MSM_PM_MODE(0, MSM_PM_SLEEP_MODE_POWER_COLLAPSE)] = {
-					.idle_supported = 1,
-					.suspend_supported = 1,
-					.idle_enabled = 0,
-					.suspend_enabled = 0,
-					.latency = 16000,
-					.residency = 20000,
-	},
-
-	[MSM_PM_MODE(0, MSM_PM_SLEEP_MODE_POWER_COLLAPSE_NO_XO_SHUTDOWN)] = {
-					.idle_supported = 1,
-					.suspend_supported = 1,
-					.idle_enabled = 0,
-					.suspend_enabled = 0,
-					.latency = 12000,
-					.residency = 20000,
-	},
-
-	/* picked latency & redisdency values from 7x30 */
-	[MSM_PM_MODE(0, MSM_PM_SLEEP_MODE_POWER_COLLAPSE_STANDALONE)] = {
-					.idle_supported = 1,
-					.suspend_supported = 1,
-					.idle_enabled = 0,
-					.suspend_enabled = 0,
-					.latency = 500,
-					.residency = 6000,
-	},
-
-	[MSM_PM_MODE(0, MSM_PM_SLEEP_MODE_WAIT_FOR_INTERRUPT)] = {
-					.idle_supported = 1,
-					.suspend_supported = 1,
-					.idle_enabled = 1,
-					.suspend_enabled = 1,
-					.latency = 2,
-					.residency = 10,
-	},
-
-	/* picked latency & redisdency values from 7x30 */
-	[MSM_PM_MODE(1, MSM_PM_SLEEP_MODE_POWER_COLLAPSE_STANDALONE)] = {
-					.idle_supported = 1,
-					.suspend_supported = 1,
-					.idle_enabled = 0,
-					.suspend_enabled = 0,
-					.latency = 500,
-					.residency = 6000,
-	},
-
-	[MSM_PM_MODE(1, MSM_PM_SLEEP_MODE_WAIT_FOR_INTERRUPT)] = {
-					.idle_supported = 1,
-					.suspend_supported = 1,
-					.idle_enabled = 1,
-					.suspend_enabled = 1,
-					.latency = 2,
-					.residency = 10,
-	},
-
-};
-
-static struct msm_pm_boot_platform_data msm_pm_8625_boot_pdata __initdata = {
-	.mode = MSM_PM_BOOT_CONFIG_REMAP_BOOT_ADDR,
-	.v_addr = MSM_CFG_CTL_BASE,
-};
-
-
 static unsigned reserve_mdp_size = MSM_RESERVE_MDP_SIZE;
 static int __init reserve_mdp_size_setup(char *p)
 {
@@ -544,19 +477,6 @@ static struct platform_device *common_devices[] __initdata = {
 #ifdef CONFIG_ION_MSM
 	&ion_dev,
 #endif
-};
-
-static struct platform_device *msm8625_surf_devices[] __initdata = {
-	&msm8625_device_dmov,
-	&msm8625_device_uart1,
-	&msm8625_device_uart_dm1,
-	&msm8625_device_uart_dm2,
-	&msm8625_gsbi0_qup_i2c_device,
-	&msm8625_gsbi1_qup_i2c_device,
-	&msm8625_device_smd,
-	&msm8625_device_otg,
-	&msm8625_device_gadget_peripheral,
-	&msm8625_kgsl_3d0,
 };
 
 static unsigned reserve_kernel_ebi1_size = RESERVE_KERNEL_EBI1_SIZE;
@@ -806,10 +726,7 @@ static void msm_adsp_add_pdev(void)
 	}
 	rpc_adsp_pdev->prog = ADSP_RPC_PROG;
 
-	if (cpu_is_msm8625())
-		rpc_adsp_pdev->pdev = msm8625_device_adsp;
-	else
-		rpc_adsp_pdev->pdev = msm_adsp_device;
+	rpc_adsp_pdev->pdev = msm_adsp_device;
 	rc = msm_rpc_add_board_dev(rpc_adsp_pdev, 1);
 	if (rc < 0) {
 		pr_err("%s: return val: %d\n",	__func__, rc);
@@ -845,13 +762,8 @@ static void __init msm7x27a_add_footswitch_devices(void)
 
 static void __init msm7x27a_add_platform_devices(void)
 {
-	if (machine_is_msm8625_surf() || machine_is_msm8625_ffa()) {
-		platform_add_devices(msm8625_surf_devices,
-			ARRAY_SIZE(msm8625_surf_devices));
-	} else {
-		platform_add_devices(msm7627a_surf_ffa_devices,
+  platform_add_devices(msm7627a_surf_ffa_devices,
 			ARRAY_SIZE(msm7627a_surf_ffa_devices));
-	}
 
 	platform_add_devices(common_devices,
 			ARRAY_SIZE(common_devices));
@@ -861,44 +773,24 @@ static void __init msm7x27a_uartdm_config(void)
 {
 	msm7x27a_cfg_uart2dm_serial();
 	msm_uart_dm1_pdata.wakeup_irq = gpio_to_irq(UART1DM_RX_GPIO);
-	if (cpu_is_msm8625())
-		msm8625_device_uart_dm1.dev.platform_data =
-			&msm_uart_dm1_pdata;
-	else
-		msm_device_uart_dm1.dev.platform_data = &msm_uart_dm1_pdata;
+
+	msm_device_uart_dm1.dev.platform_data = &msm_uart_dm1_pdata;
 }
 
 static void __init msm7x27a_otg_gadget(void)
 {
-	if (cpu_is_msm8625()) {
-		msm_otg_pdata.swfi_latency =
-		msm8625_pm_data[MSM_PM_SLEEP_MODE_WAIT_FOR_INTERRUPT].latency;
-		msm8625_device_otg.dev.platform_data = &msm_otg_pdata;
-		msm8625_device_gadget_peripheral.dev.platform_data =
-			&msm_gadget_pdata;
-	} else {
 		msm_otg_pdata.swfi_latency =
 		msm7x27a_pm_data[
 		MSM_PM_SLEEP_MODE_RAMP_DOWN_AND_WAIT_FOR_INTERRUPT].latency;
 		msm_device_otg.dev.platform_data = &msm_otg_pdata;
-		msm_device_gadget_peripheral.dev.platform_data =
-			&msm_gadget_pdata;
-	}
+		msm_device_gadget_peripheral.dev.platform_data = &msm_gadget_pdata;
 }
 
 static void __init msm7x27a_pm_init(void)
 {
-	if (machine_is_msm8625_surf() || machine_is_msm8625_ffa()) {
-		msm_pm_set_platform_data(msm8625_pm_data,
-				ARRAY_SIZE(msm8625_pm_data));
-		BUG_ON(msm_pm_boot_init(&msm_pm_8625_boot_pdata));
-		msm8x25_spm_device_init();
-		msm_pm_register_cpr_ops();
-	} else {
-		msm_pm_set_platform_data(msm7x27a_pm_data,
-				ARRAY_SIZE(msm7x27a_pm_data));
-		BUG_ON(msm_pm_boot_init(&msm_pm_boot_pdata));
-	}
+	msm_pm_set_platform_data(msm7x27a_pm_data,
+      ARRAY_SIZE(msm7x27a_pm_data));
+	BUG_ON(msm_pm_boot_init(&msm_pm_boot_pdata));
 
 	msm_pm_register_irqs();
 }
@@ -919,20 +811,20 @@ static void __init msm7x2x_init(void)
 	msm7x27a_add_platform_devices();
 	msm7x27a_init_ar6000pm();
 
-	msm7627a_init_mmc();
+  msm7627a_init_mmc();
 
 	msm_fb_add_devices();
 
 	msm7x2x_init_host();
 	msm7x27a_pm_init();
 #if defined(CONFIG_BT) && defined(CONFIG_MARIMBA_CORE)
-	msm7627a_bt_power_init();
+  msm7627a_bt_power_init();
 #endif
 #ifdef CONFIG_MSM7X27A_AUDIO
-	lge_add_sound_devices();
+  //lge_add_sound_devices();
 #endif
-	msm7627a_camera_init();
-	msm7627a_add_io_devices();
+  //msm7627a_camera_init();
+	//msm7627a_add_io_devices();
 	msm7x25a_kgsl_3d0_init();
 	msm8x25_kgsl_3d0_init();
 	lge_add_gpio_i2c_devices();
@@ -956,7 +848,7 @@ static void __init msm7x2x_init_early(void)
 #endif
 }
 
-MACHINE_START(MSM7X25A_V3, "MSM7225A v3")
+MACHINE_START(MSM7X25A_E0EU, "MSM7225A E0EU")
 	.atag_offset	= 0x100,
 	.map_io		= msm_common_io_init,
 	.reserve	= msm7x27a_reserve,
