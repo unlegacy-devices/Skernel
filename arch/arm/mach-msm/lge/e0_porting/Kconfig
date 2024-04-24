@@ -1,22 +1,14 @@
-config MACH_MSM7X25A_V3
+config MACH_MSM7X25A_E0EU
     depends on ARCH_MSM7X27A
     depends on !MSM_STACKED_MEMORY
     select MACH_LGE
-    bool "MSM7x25A V3"
+    bool "MSM7x25A E0EU"
     help
-        Support for the LG Electronics MSM7x25A V3.
-
-config MACH_MSM7X25A_V3_DS
-    depends on ARCH_MSM7X27A
-    depends on !MSM_STACKED_MEMORY
-    select MACH_LGE
-    bool "MSM7x25A V3 DS"
-    help
-        Support for the LG Electronics MSM7x25A V3 DualSim.
+        Support for the LG Electronics MSM7x25A E0EUOPEN.
 
 config LGE_BATTERY_SUSPEND_RESUME
     depends on ARCH_MSM7X27A
     select MACH_LGE
-    bool "MSM7x25A V3 Battery Suspend"
+    bool "MSM7x25A E0EU Battery Suspend"
     help
         Support for the LG Electronics Power.
