@@ -66,6 +66,7 @@
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include "../../pm-boot.h"
 #include "../../board-msm7627a.h"
+#include "./board-input/board-input.h"
 
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #include <asm/setup.h>
@@ -795,6 +796,16 @@ static void __init msm7x27a_pm_init(void)
 	msm_pm_register_irqs();
 }
 
+void __init msm7627a_add_io_devices(void)
+{
+	add_bosch_sensors();
+	add_gp2ap_proximity();
+	add_melfes_touchscreen();
+	add_gpio_keypad();
+
+	msm_init_pmic_vibrator();
+}
+
 static void __init msm7x2x_init(void)
 {
 	msm7x2x_misc_init();
@@ -824,7 +835,7 @@ static void __init msm7x2x_init(void)
   //lge_add_sound_devices();
 #endif
   //msm7627a_camera_init();
-	//msm7627a_add_io_devices();
+	msm7627a_add_io_devices();
 	msm7x25a_kgsl_3d0_init();
 	msm8x25_kgsl_3d0_init();
 	lge_add_gpio_i2c_devices();
