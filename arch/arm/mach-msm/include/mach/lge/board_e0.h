@@ -75,6 +75,10 @@ struct gpio_i2c_pin {
 
 #ifdef CONFIG_MACH_MSM7X25A_E0EU
 #define GPIO_SD_DETECT_N 40
+/* ear sense gpio */
+#define GPIO_EAR_SENSE			41
+#define GPIO_BUTTON_DETECT		28
+#define GPIO_MIC_MODE			127
 
 #define SENSOR_GPIO_I2C_SCL 		49
 #define SENSOR_GPIO_I2C_SDA 		48

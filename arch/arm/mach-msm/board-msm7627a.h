@@ -51,6 +51,8 @@ enum {
 	GPIO_CAM_GP_LED_EN1,
 	GPIO_CAM_GP_LED_EN2,
 };
+
+#ifndef CONFIG_MACH_MSM7X25A_E0EU
 /* LGE_CHANGE  [yoonsoo.kim@lge.com] 20120131 : U0 700 Rev.F Base*/
 #ifdef CONFIG_LGE_HEADSET_DETECTION_FSA8008
 // 20120914 - error
@@ -64,6 +66,8 @@ enum {
 #define GPIO_BUTTON_DETECT		29
 #define GPIO_MIC_MODE			127
 #endif
+
+#endif /* CONFIG_MACH_MSM7X25A_E0EU */
 
 
 enum {
