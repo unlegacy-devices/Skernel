@@ -1,5 +1,7 @@
 #include <linux/platform_device.h>
 #include <linux/i2c.h>
+#include <asm/gpio.h>
+#include <linux/regulator/consumer.h>
 
 #include CONFIG_LGE_BOARD_HEADER_FILE
 
@@ -31,7 +33,7 @@ int ts_set_vreg(unsigned char onoff)
 {
 	int rc;
 	
-#if defined(CONFIG_MACH_MSM7X25A_V3)
+#if defined(CONFIG_MACH_MSM7X25A_E0EU)
 	if (1) {
 		regulator_ts = regulator_get(NULL, "rfrx1");
 		if (regulator_ts == NULL)
