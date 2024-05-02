@@ -4,7 +4,7 @@
 #include CONFIG_LGE_BOARD_HEADER_FILE
 
 
-#if defined(CONFIG_SENSOR_GP2AP) && defined(CONFIG_BACKLIGHT_BU61800)
+#if (defined(CONFIG_SENSOR_GP2AP) || defined(CONFIG_SENSOR_GP2AP_MODULE)) && defined(CONFIG_BACKLIGHT_BU61800)
 extern int bu61800_ldo_enable(struct device *dev, unsigned num, unsigned enable);
 
 static int prox_power_set(unsigned char onoff)
