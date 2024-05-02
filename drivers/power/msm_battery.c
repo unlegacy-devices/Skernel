@@ -16,11 +16,11 @@
  * and <linux/sched.h> loads <linux/kernel.h>
  */
 
-#if defined(CONFIG_MACH_MSM8X25_V7)
-#define DEBUG 1
-#else
-#define DEBUG 0
-#endif
+//#if defined(CONFIG_MACH_MSM8X25_V7)
+//#define DEBUG 1
+//#else
+//#define DEBUG 0
+//#endif
 
 #include <linux/slab.h>
 #include <linux/earlysuspend.h>
