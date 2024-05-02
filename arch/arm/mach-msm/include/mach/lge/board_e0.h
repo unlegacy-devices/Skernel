@@ -76,53 +76,26 @@ struct gpio_i2c_pin {
 #ifdef CONFIG_MACH_MSM7X25A_E0EU
 #define GPIO_SD_DETECT_N 40
 
-#define SENSOR_GPIO_I2C_SCL		13
-#define SENSOR_GPIO_I2C_SDA		35
+#define SENSOR_GPIO_I2C_SCL 		49
+#define SENSOR_GPIO_I2C_SDA 		48
 
 /* accelerometer */
 #define ACCEL_GPIO_INT			94
 #define ACCEL_GPIO_I2C_SCL		SENSOR_GPIO_I2C_SCL
 #define ACCEL_GPIO_I2C_SDA		SENSOR_GPIO_I2C_SDA
-
-#ifdef CONFIG_SENSORS_BMA2X2
-#define ACCEL_I2C_ADDRESS		0x10
-#else
 #define ACCEL_I2C_ADDRESS		0x18
-#endif
 
 #define ECOM_GPIO_I2C_SCL		SENSOR_GPIO_I2C_SCL
 #define ECOM_GPIO_I2C_SDA		SENSOR_GPIO_I2C_SDA
-#define ECOM_GPIO_INT			130
-#ifdef CONFIG_SENSORS_BMA2X2
-#define ECOM_I2C_ADDRESS		0x12
-#else
+#define ECOM_GPIO_INT			35
 #define ECOM_I2C_ADDRESS		0x10
-#endif
 
 /* proximity sensor */
 #define PROXI_GPIO_I2C_SCL		16
 #define PROXI_GPIO_I2C_SDA		30
 #define PROXI_GPIO_DOUT			17
-#ifdef CONFIG_SENSOR_APDS9190
-#define PROXI_I2C_ADDRESS		0x39
-#else
 #define PROXI_I2C_ADDRESS		0x44
-#endif
 #define PROXI_LDO_NO_VCC		1
-#endif
-
-/* touch screen platform data */
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS
-struct touch_platform_data {
-	int ts_x_min;
-	int ts_x_max;
-	int ts_y_min;
-	int ts_y_max;
-	int (*power)(unsigned char onoff);
-	int irq;
-	int scl;
-	int sda;
-};
 #endif
 
 /* touch screen platform data */
