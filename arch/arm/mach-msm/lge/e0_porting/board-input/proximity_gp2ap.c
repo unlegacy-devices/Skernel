@@ -5,6 +5,21 @@
 
 
 #if defined(CONFIG_SENSOR_GP2AP) && defined(CONFIG_BACKLIGHT_BU61800)
+extern int bu61800_ldo_enable(struct device *dev, unsigned num, unsigned enable);
+
+static int prox_power_set(unsigned char onoff)
+{
+   if(onoff == 1) {
+        bu61800_ldo_enable(NULL,1,1);
+    } else {
+        bu61800_ldo_enable(NULL,1,0);
+    }
+
+    printk("[Proximity] %s() : Power %s\n",__FUNCTION__, onoff ? "On" : "Off");
+
+    return 0;
+}
+
 static struct proximity_platform_data proxi_pdata = {
 	.irq_num = PROXI_GPIO_DOUT,
 	.power = prox_power_set,
@@ -50,12 +65,9 @@ static void __init e0_init_i2c_prox(int bus_num)
 	platform_device_register(&proxi_i2c_device);
 }
 
-
-extern int bu61800_ldo_enable(struct device *dev, unsigned num, unsigned enable);
-
 void __init add_gp2ap_proximity(void)
 {
-    bu61800_ldo_enable(NULL,1,1); // 3.4 driver use soft shutdown, so do this only once
+    prox_power_set(1); // 3.4 driver use soft shutdown, so do this only once
 	lge_add_gpio_i2c_device(e0_init_i2c_prox);
 }
 #else
