@@ -531,6 +531,10 @@ extern void *__devres_alloc(dr_release_t release, size_t size, gfp_t gfp,
 #else
 extern void *devres_alloc(dr_release_t release, size_t size, gfp_t gfp);
 #endif
+extern void devres_for_each_res(struct device *dev, dr_release_t release,
+				dr_match_t match, void *match_data,
+				void (*fn)(struct device *, void *, void *),
+				void *data);
 extern void devres_free(void *res);
 extern void devres_add(struct device *dev, void *res);
 extern void *devres_find(struct device *dev, dr_release_t release,
@@ -540,6 +544,8 @@ extern void *devres_get(struct device *dev, void *new_res,
 extern void *devres_remove(struct device *dev, dr_release_t release,
 			   dr_match_t match, void *match_data);
 extern int devres_destroy(struct device *dev, dr_release_t release,
+			  dr_match_t match, void *match_data);
+extern int devres_release(struct device *dev, dr_release_t release,
 			  dr_match_t match, void *match_data);
 
 /* devres group */
@@ -687,6 +693,11 @@ struct device {
 
 	void	(*release)(struct device *dev);
 };
+
+static inline struct device *kobj_to_dev(struct kobject *kobj)
+{
+	return container_of(kobj, struct device, kobj);
+}
 
 /* Get the wakeup routines, which depend on struct device */
 #include <linux/pm_wakeup.h>
