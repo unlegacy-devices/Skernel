@@ -67,7 +67,6 @@ static void __init e0_init_i2c_prox(int bus_num)
 
 void __init add_gp2ap_proximity(void)
 {
-    prox_power_set(1); // 3.4 driver use soft shutdown, so do this only once
 	lge_add_gpio_i2c_device(e0_init_i2c_prox);
 }
 #else

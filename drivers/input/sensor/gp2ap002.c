@@ -799,7 +799,9 @@ gp2ap_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	spin_lock_init(&gp2ap_pdev->lock);
 
 	/* turn on power supply for GP2AP00200F */
-	//pdata->power(1);
+#ifdef CONFIG_MACH_MSM7X25A_E0EU
+	pdata->power(1);
+#endif
 	prox_power_onoff(1);
 	udelay(120);
 
@@ -877,6 +879,12 @@ gp2ap_i2c_remove(struct i2c_client *client)
 {
 	struct proximity_gp2ap_device *pdev = i2c_get_clientdata(client);
 	int i;
+#ifdef CONFIG_MACH_MSM7X25A_E0EU
+	struct proximity_platform_data	*pdata;
+
+	pdata = pdev->client->dev.platform_data;
+	pdata->power(0);
+#endif
 
 	if (GP2AP_DEBUG_FUNC_TRACE & gp2ap_debug_mask)
 		PROXD("entry\n");
