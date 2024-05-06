@@ -392,10 +392,12 @@ reg_disable:
 
 int  ar600x_wlan_power(bool on)
 {
+	pr_err("---------- ar600x_wlan_power start -------------");
 	if (on)
 		msm_AR600X_setup_power(on);
 	else
 		msm_AR600X_shutdown_power(on);
 
+	pr_err("---------- ar600x_wlan_power end -------------");
 	return 0;
 }

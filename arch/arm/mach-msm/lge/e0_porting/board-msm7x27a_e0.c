@@ -822,7 +822,9 @@ static void __init msm7x2x_init(void)
 	msm7x27a_otg_gadget();
 	msm7x27a_add_footswitch_devices();
 	msm7x27a_add_platform_devices();
+	pr_err("---------- msm7x27a_init_ar6000pm start -------------");
 	msm7x27a_init_ar6000pm();
+	pr_err("---------- msm7x27a_init_ar6000pm end -------------");
 
   msm7627a_init_mmc();
 
@@ -831,7 +833,9 @@ static void __init msm7x2x_init(void)
 	msm7x2x_init_host();
 	msm7x27a_pm_init();
 #if defined(CONFIG_BT) && defined(CONFIG_MARIMBA_CORE)
+	pr_err("---------- msm7627a_bt_power_init start -------------");
   msm7627a_bt_power_init();
+	pr_err("---------- msm7627a_bt_power_init end -------------");
 #endif
 #ifdef CONFIG_MSM7X27A_AUDIO
   //lge_add_sound_devices();
