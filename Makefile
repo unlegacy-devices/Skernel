@@ -335,11 +335,7 @@ include $(srctree)/scripts/Kbuild.include
 
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
-ifdef CONFIG_CCACHE
-REAL_CC		= ccache $(CROSS_COMPILE)gcc
-else
-REAL_CC		= $(CROSS_COMPILE)gcc
-endif
+CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -365,10 +361,6 @@ ARM_FLAGS       = -funswitch-loops \
                   -mfpu=neon \
                   -march=armv7-a \
                   -fvect-cost-model
-
-# Use the wrapper for the compiler.  This wrapper scans for new
-# warnings and causes the build to stop upon encountering them.
-CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
@@ -398,7 +390,6 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
 		   -Wno-maybe-uninitialized \
 		   -Wno-format-security \
                    -marm -mfloat-abi=softfp -march=armv7-a \
